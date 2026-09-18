@@ -60,3 +60,7 @@ GitHub Actions now builds `leos-cafe-android-apk` with a debug-signed `leos-cafe
 3. Sign in as admin, or register a customer/rider using the development OTP printed in the **server terminal**. Real SMS still needs Twilio configuration. Keep the server running and the phone connected to Wi-Fi.
 
 The APK loads the same live app from your server; it does **not** contain the Node backend or customer data. Android can share location while the rider app stays in the foreground; tracking stops when the app goes to the background. For internet-wide production use, deploy the backend to HTTPS and configure SMS, secure cookies, persistent storage and notifications. The APK allows plain HTTP only to support same-LAN testing; do not use untrusted Wi-Fi for real customer orders.
+
+## Windows portable PC app
+
+Download the `leos-cafe-windows-portable` artifact and extract both outer and inner ZIPs. Double-click `Start-Leos-Cafe.cmd` inside the extracted folder; it includes `node.exe`, so no separate Node installation is required. On first run, enter an admin username, recovery mobile and initial password in the prompt. Then open `http://localhost:3000` in the PC browser. Keep the black server window open while taking orders. The `data/store.json` file is created alongside the server and retains accounts/orders; back it up securely. For Android phone testing, follow the same-Wi-Fi and LAN-IP steps above and allow port 3000 on Windows Private networks when prompted.

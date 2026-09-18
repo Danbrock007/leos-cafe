@@ -57,3 +57,32 @@ jobs:
           path: leos-cafe-debug.apk
           if-no-files-found: error
           retention-days: 30
+  windows:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          architecture: x64
+      - name: Test server on Windows
+        run: |
+          npm run check
+          npm test
+      - name: Make portable Windows package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Copy-Item -Recurse public dist/public
+          Copy-Item server.js,package.json,README.md,Start-Leos-Cafe.cmd dist/
+          Copy-Item (Get-Command node).Source dist/node.exe
+          Compress-Archive -Path dist/* -DestinationPath leos-cafe-windows-portable.zip -CompressionLevel Optimal
+      - name: Attach PC package
+        uses: actions/upload-artifact@v4
+        with:
+          name: leos-cafe-windows-portable
+          path: leos-cafe-windows-portable.zip
+          if-no-files-found: error
+          retention-days: 30
