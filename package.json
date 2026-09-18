@@ -1,0 +1,1 @@
+{"name":"leos-cafe","version":"1.0.0","private":true,"description":"Leo's Cafe mobile ordering PWA and operations server","scripts":{"start":"node server.js","check":"node --check server.js && node --check public/app.js","test":"node --test test/*.test.js"},"engines":{"node":">=20"}}
