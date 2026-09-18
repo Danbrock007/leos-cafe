@@ -50,3 +50,13 @@ The initial printed menu contains small text. Some sizes and add-ons are ambiguo
 ## Download a build from GitHub Actions
 
 After pushing the extracted project to `main`, open your GitHub repository → **Actions** → **Build Leo's Cafe package** → latest successful run → **Artifacts** → **leos-cafe-build**. GitHub downloads an outer artifact ZIP containing `leos-cafe-build.zip`. Extract both ZIPs; run `node server.js` from the inner package after setting the initial admin environment variables above. You can also open the workflow and click **Run workflow** to build again. This build is the runnable server and PWA package; it is not an APK.
+
+## Android debug APK for phone testing
+
+GitHub Actions now builds `leos-cafe-android-apk` with a debug-signed `leos-cafe-debug.apk`. Download the artifact, extract it and install the APK on an Android 7.0+ phone. It is for testing, not a Play Store release.
+
+1. On a computer connected to the **same Wi-Fi** as the Android phone, run the server using the admin setup instructions above. Windows Firewall must allow TCP port 3000 on the private LAN. Find the computer's IPv4 address with `ipconfig`.
+2. In the Android app, enter `http://COMPUTER-LAN-IP:3000`, for example `http://192.168.1.10:3000`, and tap Connect. Do not enter `localhost` on the phone: that points to the phone itself.
+3. Sign in as admin, or register a customer/rider using the development OTP printed in the **server terminal**. Real SMS still needs Twilio configuration. Keep the server running and the phone connected to Wi-Fi.
+
+The APK loads the same live app from your server; it does **not** contain the Node backend or customer data. Android can share location while the rider app stays in the foreground; tracking stops when the app goes to the background. For internet-wide production use, deploy the backend to HTTPS and configure SMS, secure cookies, persistent storage and notifications. The APK allows plain HTTP only to support same-LAN testing; do not use untrusted Wi-Fi for real customer orders.
