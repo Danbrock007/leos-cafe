@@ -10,7 +10,7 @@ Requires Node.js 20+; no npm packages or database setup are needed.
 
 ```powershell
 $env:ADMIN_USER="khurram.saeed"
-$env:ADMIN_PHONE="03225302070"
+$env:ADMIN_PHONE=Read-Host "Admin recovery mobile number"
 $env:ADMIN_PASSWORD=Read-Host "Initial admin password"
 $env:PORT="3000"
 node server.js
@@ -18,11 +18,11 @@ node server.js
 
 For the requested initial account, enter the password supplied in the conversation at that prompt. Do not commit it to GitHub. Once created, the admin record stays in `data/store.json` and future restarts do not need `ADMIN_PASSWORD`. On a private computer visit `http://localhost:3000`. Run `npm test` to verify order, rider and reward flows. `npm run check` checks JavaScript syntax.
 
-**Real phone OTP:** set `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_FROM` in the server environment. In development, the six-digit OTP is printed to the server terminal. In production (`NODE_ENV=production`), registration and reset reject requests unless SMS is configured. The admin reset code goes to 03225302070 when that is the admin's registered phone. Set `COOKIE_SECURE=true` with HTTPS.
+**Real phone OTP:** set `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and `TWILIO_FROM` in the server environment. In development, the six-digit OTP is printed to the server terminal. In production (`NODE_ENV=production`), registration and reset reject requests unless SMS is configured. The admin reset code goes to the number used when initializing the admin account. Set `COOKIE_SECURE=true` with HTTPS.
 
 ## Put it on GitHub
 
-Create a private repository named `leos-cafe`, extract this ZIP, then from the extracted folder:
+The project can be uploaded to `leos-cafe`. If starting from a fresh local checkout:
 
 ```bash
 git init
@@ -46,3 +46,7 @@ git push -u origin main
 This package is a working **PWA and server**, not a native Android APK. Install it on a phone from an HTTPS deployment via the browser's “Add to Home Screen.” The service worker caches the screen shell; ordering always needs a connection. Rider geolocation uses browser `watchPosition` and requires an open, active rider screen. Browsers may stop location updates in the background; this version does **not** provide continuous WhatsApp-style background tracking, native push notifications, map route/ETA calculations, card payment, or SMS without Twilio credentials. An Android/iOS release with reliable background tracking and push requires native mobile clients, device permission flows, production hosting and push/SMS infrastructure. The countdown is the configured estimated delivery time, not traffic-based routing. Set the cafe map coordinates in Settings; the displayed delivery radius is informational pending address geocoding. Date filters use UTC order creation dates; timestamps display in Pakistan time.
 
 The initial printed menu contains small text. Some sizes and add-ons are ambiguous in the image, so only clearly legible base prices are seeded. Verify each product and deal in the admin menu before launch.
+
+## Download a build from GitHub Actions
+
+After pushing the extracted project to `main`, open your GitHub repository → **Actions** → **Build Leo's Cafe package** → latest successful run → **Artifacts** → **leos-cafe-build**. GitHub downloads an outer artifact ZIP containing `leos-cafe-build.zip`. Extract both ZIPs; run `node server.js` from the inner package after setting the initial admin environment variables above. You can also open the workflow and click **Run workflow** to build again. This build is the runnable server and PWA package; it is not an APK.
