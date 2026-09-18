@@ -1,12 +1,31 @@
-name: Check app
-on: [push, pull_request]
+name: Build Leo's Cafe package
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm run check
-      - run: npm test
+      - name: Check source
+        run: npm run check
+      - name: Test order and reward flows
+        run: npm test
+      - name: Create runnable server and PWA ZIP
+        run: |
+          zip -qr leos-cafe-build.zip public server.js package.json README.md .gitignore .github test -x 'data/*' '.env' 'node_modules/*'
+          unzip -t leos-cafe-build.zip | tail -1
+      - name: Attach build to workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: leos-cafe-build
+          path: leos-cafe-build.zip
+          if-no-files-found: error
+          retention-days: 30
