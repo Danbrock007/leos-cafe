@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'leos-test-'));
-process.env.DATA_FILE=path.join(dir,'store.json');process.env.ADMIN_USER='testadmin';process.env.ADMIN_PASSWORD='testpass123';process.env.ADMIN_PHONE='03225302070';process.env.NODE_ENV='test';
+process.env.DATA_FILE=path.join(dir,'store.json');process.env.ADMIN_USER='testadmin';process.env.ADMIN_PASSWORD='testpass123';process.env.ADMIN_PHONE='03000000000';process.env.NODE_ENV='test';
 const {server}=require('../server');
 let base,admin='',customer='',rider='';
 async function call(url,method='GET',data,cookie=''){let r=await fetch(base+'/api'+url,{method,headers:{'Content-Type':'application/json',cookie},body:data?JSON.stringify(data):undefined}),d=await r.json();return {status:r.status,data:d,cookie:r.headers.get('set-cookie')?.split(';')[0]||''};}
